@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+/* Tokens taken from the product console (acceleratio-cloud/core apps/frontend/src/app/tokens.css):
+   an achromatic instrument palette, a near-black brand fill, and one sky accent that is only ever
+   used for links, focus and selected text, never as a fill. Status hues mean status. */
+:root {
+  --paper: oklch(0.975 0 0);
+  --paper-2: oklch(0.955 0 0);
+  --card: oklch(0.99 0 0);
+  --ink: oklch(0.2 0 0);
+  --ink-2: oklch(0.4 0 0);
+  --ink-3: oklch(0.5 0 0);
+  --line: oklch(0.89 0 0);
+  --line-2: oklch(0.8 0 0);
+  --graphite: oklch(0.2 0 0);
+  --graphite-hover: oklch(0.3 0 0);
+  --facility: #0d0e0f;
+  --accent: oklch(0.5 0.15 245);
+  --accent-soft: color-mix(in oklch, oklch(0.5 0.15 245) 9%, white);
+  --ok: oklch(0.5 0.13 150);
+  --ok-soft: color-mix(in oklch, oklch(0.5 0.13 150) 12%, white);
+  --warn: oklch(0.5 0.11 70);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-graphite: var(--graphite);
+  --color-graphite-hover: var(--graphite-hover);
+  --color-facility: var(--facility);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  color-scheme: light;
+  overflow-x: hidden;
+  overflow-x: clip;
+  scroll-padding-top: 72px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+  /* One sky for the whole page: cool morning at the top, warm sunrise at the bottom. */
+  background: linear-gradient(180deg, oklch(0.968 0.008 240) 0%, var(--paper) 22%, var(--paper) 72%, oklch(0.968 0.012 70) 100%);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--card);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Wide, fluid container: about 1600px of content on a 16-inch laptop, capped on very large screens. */
+.wrap {
+  width: 100%;
+  max-width: 1760px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 3.7vw, 72px);
+}
+
+/* Display face: Archivo, extended, like the nameplate on a piece of rack equipment.
+   Used only for the hero and section titles. */
+.display {
+  font-family: var(--font-archivo), var(--font-geist-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+@media (pointer: coarse) {
+  .btn { min-height: 44px; }
+}
+
+/* ------------------------------------------------ the install log: the one orchestrated moment */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Lines print once, at log cadence, like the real installer. No fades: terminals do not fade. */
+  .log-line {
+    animation: print 0.01s steps(1) both;
+    animation-delay: calc(var(--i) * 220ms + 300ms);
+  }
+  .log-cursor {
+    animation: blink 1.1s steps(1) infinite;
+    animation-delay: calc(var(--i) * 220ms + 300ms);
+  }
+  .flow { animation: flow 1.6s linear infinite; }
+  .pulse-dot { animation: pulse-dot 2.4s ease-in-out infinite; animation-delay: -0.6s; }
+}
+@keyframes print {
+  from { visibility: hidden; }
+}
+@keyframes blink {
+  0% { visibility: hidden; }
+  50% { visibility: visible; }
+}
+.flow { stroke-dasharray: 4 6; }
+@keyframes flow {
+  to { stroke-dashoffset: -20; }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* FAQ */
+.faq summary { list-style: none; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq .chev { transition: transform 0.3s var(--ease-out); }
+.faq details[open] .chev { transform: rotate(45deg); }
+
+/* ================================================ the dark stage (inside the server) */
+
+.stage {
+  --n-bg: #0d0e0f;
+  --n-card: #141619;
+  --n-card-2: #181b1e;
+  --n-line: rgba(255, 255, 255, 0.08);
+  --n-line-2: rgba(255, 255, 255, 0.14);
+  --n-text: #eceef0;
+  --n-text-2: #a3a9af;
+  --n-text-3: #7a8087;
+  --n-sky: oklch(0.76 0.12 245);
+  --n-green: oklch(0.74 0.14 150);
+  --n-amber: oklch(0.8 0.13 75);
+  background: var(--n-bg);
+  color: var(--n-text);
+  color-scheme: dark;
+}
+.stage ::selection { background: var(--n-text); color: var(--n-bg); }
+
+/* Cards: a lifted sheet with a lit top edge. Colour only ever comes from status lights. */
+.n-card {
+  position: relative;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--n-card-2), var(--n-card) 60%);
+  border: 1px solid var(--n-line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 48px -32px rgba(0, 0, 0, 0.8);
+  transition: border-color 0.3s var(--ease-out), transform 0.4s var(--ease-out);
+}
+.n-card:hover { border-color: var(--n-line-2); }
+.n-panel {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--n-line);
+}
+.n-mono { font-family: var(--font-geist-mono), ui-monospace, monospace; }
+
+/* A soft light pooled under the product shot, as if the console window were lit from below. */
+.n-glow { position: relative; isolation: isolate; }
+.n-glow::before {
+  content: "";
+  position: absolute;
+  inset: 12% 6% -8%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(190, 210, 235, 0.16), transparent);
+  filter: blur(40px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .n-pulse { animation: pulse-dot 2.4s ease-in-out infinite; }
+  .n-bar { animation: n-bar 2.6s var(--ease-out) infinite; transform-origin: left; }
+  .n-cycle > * { animation: n-cycle 9s steps(1) infinite; }
+  .n-cycle > :nth-child(2) { animation-delay: 3s; }
+  .n-cycle > :nth-child(3) { animation-delay: 6s; }
+  .n-blink { animation: blink 1.1s steps(1) infinite; }
+}
+@keyframes n-bar {
+  0% { transform: scaleX(0.05); }
+  70%, 100% { transform: scaleX(1); }
+}
+/* Three stacked states that take turns: waiting for DNS, issuing, HTTPS. */
+.n-cycle { display: grid; }
+.n-cycle > * { grid-area: 1 / 1; visibility: hidden; }
+.n-cycle > :first-child { visibility: visible; }
+@keyframes n-cycle {
+  0% { visibility: visible; }
+  33.33% { visibility: hidden; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .n-cycle > :first-child { visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .n-cycle > * { visibility: hidden; }
+  .n-cycle > :last-child { visibility: visible; }
+}
+
+/* Lifecycle rail */
+.rail-fill { transform-origin: top; transform: scaleY(var(--rp, 0)); transition: transform 0.6s var(--ease-out); }
+.rail-step { transition: color 0.3s var(--ease-out); }
+.rail-step .dot { transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out); }
+.rail-step[data-active="true"] { color: var(--ink); }
+.rail-step[data-active="true"] .dot { background: var(--ink); border-color: var(--ink); box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06); }
+.rail-step[data-done="true"] .dot { background: var(--ink-3); border-color: var(--ink-3); }
+.scene { transition: opacity 0.5s var(--ease-out); }
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .scene[data-active="false"] { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .iso-clouds { animation: iso-drift 70s ease-in-out infinite alternate; }
+}
+@keyframes iso-drift {
+  to { transform: translateX(60px); }
+}
+
+/* Gallery autoplay progress */
+.gallery-progress { transform-origin: left; transform: scaleX(0); animation: gallery-progress var(--d, 6000ms) linear forwards; }
+@keyframes gallery-progress { to { transform: scaleX(1); } }
+
+/* Hero product shot: tilted back, rises and settles once on load. */
+.hero-shot { transform: rotateX(14deg); transform-origin: 50% 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-shot { animation: shot-rise 1.4s var(--ease-out) 0.25s both; }
+}
+@keyframes shot-rise {
+  from { opacity: 0; transform: translateY(60px) rotateX(22deg); }
+}
+
+/* Isometric architecture: tones are CSS variables, the active layer is chosen by :hover and :has(). No JavaScript. */
+.t-chassis { --t: #24272b; --l: #17191c; --r: #111315; --s: rgba(255, 255, 255, 0.16); }
+.t-block { --t: #3b3f45; --l: #2a2d32; --r: #202327; --s: rgba(255, 255, 255, 0.14); }
+.t-sky { --t: oklch(0.78 0.11 245); --l: oklch(0.62 0.12 245); --r: oklch(0.52 0.12 245); --s: rgba(255, 255, 255, 0.35); }
+.t-plate { --t: #181a1d; --l: #131517; --r: #0f1113; --s: rgba(255, 255, 255, 0.2); }
+.f-t, .f-l, .f-r { stroke: var(--s); transition: fill 0.4s var(--ease-out), stroke 0.4s var(--ease-out); }
+.f-t { fill: var(--t); }
+.f-l { fill: var(--l); }
+.f-r { fill: var(--r); }
+.f-ring { fill: none; stroke: var(--s); stroke-width: 0.6; opacity: 0.5; }
+.iso-mesh { stroke: rgba(255, 255, 255, 0.3); }
+.iso-ns { fill: rgba(255, 255, 255, 0.02); stroke: rgba(255, 255, 255, 0.32); }
+.iso-screen { fill: #4a4f56; }
+.iso-lead { stroke: rgba(255, 255, 255, 0.22); }
+.iso-dot { fill: rgba(255, 255, 255, 0.5); }
+.iso-name { fill: #dfe2e6; }
+.iso-layer { transition: opacity 0.4s var(--ease-out); }
+.iso-wrap:has(.iso-layer:hover, .iso-legend-item:is(:hover, :focus-visible)) .iso-layer { opacity: 0.35; }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) { opacity: 1; }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .t-block { --t: #f2f3f5; --l: #c6cad0; --r: #9ca2a9; --s: rgba(255, 255, 255, 0.5); }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .t-plate { --t: #24282d; --l: #1c1f23; --r: #16181b; --s: rgba(255, 255, 255, 0.75); }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .iso-mesh { stroke: rgba(255, 255, 255, 0.8); }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .iso-ns { stroke: rgba(255, 255, 255, 0.7); }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .iso-screen { fill: #ffffff; }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .iso-lead { stroke: rgba(255, 255, 255, 0.7); }
+:is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .iso-dot, :is(.iso-layer[data-l="control"]:hover, .iso-wrap:has([data-legend="control"]:is(:hover, :focus-visible)) .iso-layer[data-l="control"], .iso-layer[data-l="workloads"]:hover, .iso-wrap:has([data-legend="workloads"]:is(:hover, :focus-visible)) .iso-layer[data-l="workloads"], .iso-layer[data-l="data"]:hover, .iso-wrap:has([data-legend="data"]:is(:hover, :focus-visible)) .iso-layer[data-l="data"], .iso-layer[data-l="cluster"]:hover, .iso-wrap:has([data-legend="cluster"]:is(:hover, :focus-visible)) .iso-layer[data-l="cluster"]) .iso-name { fill: #ffffff; }
+.iso-legend-item:is(:hover, :focus-visible), .iso-wrap:has(.iso-layer[data-l="control"]:hover) [data-legend="control"], .iso-wrap:has(.iso-layer[data-l="workloads"]:hover) [data-legend="workloads"], .iso-wrap:has(.iso-layer[data-l="data"]:hover) [data-legend="data"], .iso-wrap:has(.iso-layer[data-l="cluster"]:hover) [data-legend="cluster"] { border-color: var(--n-line-2); background: rgba(255, 255, 255, 0.04); }
+@media (prefers-reduced-motion: reduce) {
+  .iso-packet { display: none; }
+}
+
+/* Offscreen sections skip layout and paint until they approach the viewport.
+   --cv is each section's rough height, so the scrollbar and anchor jumps stay stable before first render. */
+.cv { content-visibility: auto; contain-intrinsic-size: auto var(--cv, 900px); }
